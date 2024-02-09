@@ -6,6 +6,7 @@ type InputProps = {
   value: string;
   type?: string;
   className?: string;
+  placeholder?: string;
   setValue: Function;
   disabled?: boolean;
   isLoading?: boolean;

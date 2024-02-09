@@ -4,11 +4,11 @@ import AddNewPost from "./component/addNewPost/AddNewPost";
 
 const Header = () => {
   return (
-    <header className={styles.header}>
+    <div className={styles.header}>
       <PostCount />
 
       <AddNewPost />
-    </header>
+    </div>
   );
 };
 

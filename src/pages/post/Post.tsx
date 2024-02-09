@@ -1,9 +1,16 @@
 import Header from "../../component/header/Header";
+import Filter from "../../component/filter/Filter";
 
 const Post = () => {
   return (
     <div>
-      <Header />
+      <header>
+        <Header />
+      </header>
+
+      <main>
+        <Filter />
+      </main>
     </div>
   );
 };
