@@ -3,9 +3,10 @@ import Post from "./pages/post/Post";
 import Login from "./pages/login/Login";
 import Registration from "./pages/registration/Registration";
 import Ui from "./pages/ui/Ui";
+import Container from "./component/container/Container";
 
 const App = () => (
-  <div>
+  <Container>
     <Routes>
       <Route path={"/"} element={<Post />} />
 
@@ -13,7 +14,7 @@ const App = () => (
       <Route path={"/registration"} element={<Registration />} />
       <Route path={"/ui"} element={<Ui />} />
     </Routes>
-  </div>
+  </Container>
 );
 
 export default App;

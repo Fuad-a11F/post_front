@@ -1,5 +1,11 @@
+import Header from "../../component/header/Header";
+
 const Post = () => {
-  return <div>87</div>;
+  return (
+    <div>
+      <Header />
+    </div>
+  );
 };
 
 export default Post;
