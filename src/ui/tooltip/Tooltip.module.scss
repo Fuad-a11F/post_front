@@ -1,0 +1,24 @@
+.tooltip {
+  display: inline-block;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 8px 20px;
+  font-size: 14px;
+  opacity: 0;
+  transform: translateX(200px);
+  border-radius: 10px;
+
+  &__error {
+    background: red;
+  }
+
+  &__success {
+    background: green;
+  }
+
+  &__open {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

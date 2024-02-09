@@ -1,0 +1,15 @@
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 500px;
+  margin: 0 auto;
+
+  &__button {
+    align-self: flex-end;
+  }
+
+  &__spinner {
+    margin: 20px auto 0 auto;
+  }
+}

@@ -1,0 +1,14 @@
+.button {
+  height: 30px;
+  min-width: 80px;
+  cursor: pointer;
+  background: blue;
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  transition: .2s;
+
+  &:hover {
+    background: #2020a2;
+  }
+}
