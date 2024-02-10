@@ -1,6 +1,6 @@
 import styles from "./Filter.module.scss";
-import Search from "./search/Search";
-import Date from "./date/Date";
+import Input from "../../ui/input/Input";
+import Select from "../../ui/select/Select";
 
 const Filter = () => {
   return (
@@ -8,9 +8,18 @@ const Filter = () => {
       <h3>Фильтры</h3>
 
       <div className={styles.row}>
-        <Search />
+        <div>
+          <Input value={""} placeholder={"Поиск"} setValue={() => {}} />
+        </div>
 
-        <Date />
+        <div>
+          <Select
+            options={[
+              { value: "new", text: "Сначала новые" },
+              { value: "old", text: "Сначала старые" },
+            ]}
+          />
+        </div>
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 import { FC } from "react";
+
 import Button from "../../../../ui/button/Button";
 
 type AddNewPostProps = {
