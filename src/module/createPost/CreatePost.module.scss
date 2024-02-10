@@ -1,4 +1,4 @@
-.column {
+.create {
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -7,9 +7,5 @@
 
   &__button {
     align-self: flex-end;
-  }
-
-  &__spinner {
-    margin: 20px auto 0 auto;
   }
 }

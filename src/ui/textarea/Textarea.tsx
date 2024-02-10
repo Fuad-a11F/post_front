@@ -1,10 +1,12 @@
-import styles from "./Textarea.module.scss";
 import { FC } from "react";
 import classNames from "classnames";
+
+import styles from "./Textarea.module.scss";
 
 type TextareaProps = {
   value: string;
   className?: string;
+  placeholder?: string;
   setValue: Function;
   isLoading?: boolean;
 };

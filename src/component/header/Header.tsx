@@ -1,14 +1,22 @@
 import styles from "./Header.module.scss";
 import PostCount from "./component/postCount/PostCount";
 import AddNewPost from "./component/addNewPost/AddNewPost";
+import { useModal } from "../../shared/hook/useModal";
+import CreatePostModal from "../../module/createPost/CreatePostModal";
 
 const Header = () => {
-  return (
-    <div className={styles.header}>
-      <PostCount />
+  const { hideModal, isModalOpened, openModal } = useModal();
 
-      <AddNewPost />
-    </div>
+  return (
+    <>
+      <div className={styles.header}>
+        <PostCount />
+
+        <AddNewPost openModal={openModal} />
+      </div>
+
+      <CreatePostModal isModalOpened={isModalOpened} hideModal={hideModal} />
+    </>
   );
 };
 
