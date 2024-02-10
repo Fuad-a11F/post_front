@@ -1,0 +1,35 @@
+.info {
+  margin-bottom: 50px;
+
+  &__img {
+    width: 100%;
+    margin-top: 20px;
+
+    img {
+      max-width: 100%;
+      border-radius: 10px;
+    }
+  }
+
+  &__title {
+    font-size: 24px;
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+
+  &__text {
+    margin-top: 8px;
+  }
+
+  &__time {
+    font-size: 14px;
+    text-align: right;
+  }
+
+  &__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 25px;
+  }
+}
