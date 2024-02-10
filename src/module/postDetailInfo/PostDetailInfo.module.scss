@@ -4,6 +4,7 @@
   &__img {
     width: 100%;
     margin-top: 20px;
+    text-align: center;
 
     img {
       max-width: 100%;
@@ -26,10 +27,21 @@
     text-align: right;
   }
 
+  &__button {
+    display: flex;
+    gap: 10px;
+  }
+
   &__row {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-top: 25px;
   }
+}
+
+.spinner {
+  margin-top: 80px;
+  display: flex;
+  justify-content: center;
 }

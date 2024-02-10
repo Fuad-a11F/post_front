@@ -5,18 +5,27 @@ import img from "./assets/Screenshot_8.png";
 import CustomLink from "../../ui/customLink/CustomLink";
 
 type PostItemProps = {
+  id: string;
   text: string;
   time: any;
   title: string;
   image: string;
+  author: string;
 };
 
-const PostItem: FC<PostItemProps> = ({ text, title, time, image }) => {
+const PostItem: FC<PostItemProps> = ({
+  id,
+  text,
+  title,
+  time,
+  image,
+  author,
+}) => {
   return (
     <div className={styles.item}>
       <div>
-        <div>
-          <img src={img} alt="post_image" />
+        <div className={styles.item__img}>
+          <img src={image} alt="post_image" />
         </div>
 
         <p className={styles.item__title}>{title}</p>
@@ -25,10 +34,13 @@ const PostItem: FC<PostItemProps> = ({ text, title, time, image }) => {
       </div>
 
       <div>
-        <p className={styles.item__time}>{time}</p>
+        <div>
+          <p className={styles.item__time}>Автор: {author}</p>
+          <p className={styles.item__time}>{time}</p>
+        </div>
 
         <div className={styles.item__row}>
-          <CustomLink text={"Читать всю"} link={""} />
+          <CustomLink text={"Читать всю"} link={`/post/${id}`} />
 
           <button>Лайк</button>
         </div>

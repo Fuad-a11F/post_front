@@ -1,5 +1,10 @@
+import { useAppSelector } from "../../../../shared/hook/redux";
+import { getPostsSelector } from "../../../../store/selectors";
+
 const PostCount = () => {
-  return <div>Общее кол-во постов: 10</div>;
+  const posts = useAppSelector(getPostsSelector);
+
+  return <div>Общее кол-во постов: {posts.post.length}</div>;
 };
 
 export default PostCount;

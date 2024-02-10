@@ -7,6 +7,7 @@ type ButtonProps = {
   text: string;
   isLoading?: boolean;
   onClick?: Function;
+  type?: string;
 };
 
 const Button: FC<ButtonProps> = ({ text, className, isLoading, ...rest }) => {

@@ -10,12 +10,19 @@ type Options = {
 type Select = {
   options: Options[];
   className?: string;
+  value: string;
+  setValue: Function;
 };
 
-const Select: FC<Select> = ({ options, className }) => {
+const Select: FC<Select> = ({ options, className, value, setValue }) => {
   return (
     <div className={classNames(styles.select, className || "")}>
-      <select name="" id="">
+      <select
+        name=""
+        id=""
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+      >
         {options.map((item) => (
           <option key={item.text} value={item.value}>
             {item.text}

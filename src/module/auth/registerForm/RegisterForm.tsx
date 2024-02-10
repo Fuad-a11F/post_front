@@ -1,8 +1,21 @@
-import styles from "./RegisterForm.module.scss";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+
+import styles from "./RegisterForm.module.scss";
 import Input from "../../../ui/input/Input";
 import Button from "../../../ui/button/Button";
 import CustomLink from "../../../ui/customLink/CustomLink";
+import { useRegistrationMutation } from "../api/authApi";
+import { toggleTooltip } from "../../../store/slice/tooltipSlice";
+import { useAppDispatch } from "../../../shared/hook/redux";
+import { isAuth } from "../../../store/slice/authSlice";
+import ErrorText from "../../../ui/errorText/ErrorText";
+import {
+  emailValidate,
+  passwordValidate,
+  usernameValidate,
+} from "../../../shared/validate/validate";
+import { generatePassword } from "./helper/generatePassword";
 
 type FormValues = {
   username: string;
@@ -11,10 +24,47 @@ type FormValues = {
 };
 
 const RegisterForm = () => {
-  const { control, handleSubmit, setValue, reset } = useForm<FormValues>();
+  const {
+    control,
+    setValue,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormValues>();
+  const [registration, { isLoading }] = useRegistrationMutation();
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
-  const onSubmit: SubmitHandler<FormValues> = (data: FormValues) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<FormValues> = async (data: FormValues) => {
+    const response = await registration(data);
+
+    if (response.data.hasOwnProperty("message")) {
+      dispatch(
+        toggleTooltip({
+          isOpen: true,
+          message: response.data.message,
+          isSuccess: false,
+          isError: true,
+        }),
+      );
+    } else {
+      localStorage.setItem("idAuthUser", response.data.id);
+      navigate("/");
+      dispatch(isAuth());
+      dispatch(
+        toggleTooltip({
+          isOpen: true,
+          message: "Вы успешно зарегистрировались и вошли в систему",
+          isSuccess: true,
+          isError: false,
+        }),
+      );
+    }
+  };
+
+  const onGeneratePassword = () => {
+    const password = generatePassword();
+
+    setValue("password", password);
   };
 
   return (
@@ -25,33 +75,67 @@ const RegisterForm = () => {
         <Controller
           control={control}
           name="username"
+          rules={usernameValidate}
           render={({ field: { onChange, value } }) => (
-            <Input value={value} setValue={onChange} placeholder={"Логин"} />
+            <div>
+              <Input
+                value={value}
+                setValue={onChange}
+                isLoading={isLoading}
+                placeholder={"Логин"}
+              />
+
+              <ErrorText text={errors?.username?.message} />
+            </div>
           )}
         />
 
         <Controller
           control={control}
           name="email"
+          rules={emailValidate}
           render={({ field: { onChange, value } }) => (
-            <Input value={value} setValue={onChange} placeholder={"Email"} />
+            <div>
+              <Input
+                value={value}
+                setValue={onChange}
+                isLoading={isLoading}
+                placeholder={"Email"}
+              />
+
+              <ErrorText text={errors?.email?.message} />
+            </div>
           )}
         />
 
         <Controller
           control={control}
           name="password"
+          rules={passwordValidate}
           render={({ field: { onChange, value } }) => (
-            <Input
-              value={value}
-              setValue={onChange}
-              type={"password"}
-              placeholder={"Пароль"}
-            />
+            <div>
+              <div className={styles.form__password}>
+                <Input
+                  value={value}
+                  setValue={onChange}
+                  isLoading={isLoading}
+                  type={"password"}
+                  placeholder={"Пароль"}
+                />
+
+                <Button
+                  type={"button"}
+                  text={"Сгенерировать пароль"}
+                  onClick={onGeneratePassword}
+                />
+              </div>
+
+              <ErrorText text={errors?.password?.message} />
+            </div>
           )}
         />
 
-        <Button text={"Войти"} />
+        <Button text={"Войти"} isLoading={isLoading} />
       </form>
 
       <p className={styles.login}>

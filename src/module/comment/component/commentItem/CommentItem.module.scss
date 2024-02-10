@@ -10,6 +10,12 @@
     }
   }
 
+  &__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
   &__info {
     p {
       margin: 0;

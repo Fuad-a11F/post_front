@@ -1,21 +1,26 @@
-import { Routes, Route } from "react-router-dom";
-
-import Post from "./pages/post/Post";
-import Login from "./pages/login/Login";
-import Registration from "./pages/registration/Registration";
 import Container from "./component/container/Container";
-import PostDetail from "./pages/postDetail/PostDetail";
+import AppRouter from "./component/appRouter/AppRouter";
+import Tooltip from "./ui/tooltip/Tooltip";
+import { useAppSelector } from "./shared/hook/redux";
+import { getTooltip } from "./store/selectors";
 
-const App = () => (
-  <Container>
-    <Routes>
-      <Route path={"/"} element={<Post />} />
-      <Route path={"/:id"} element={<PostDetail />} />
+const App = () => {
+  const tooltip = useAppSelector(getTooltip);
 
-      <Route path={"/login"} element={<Login />} />
-      <Route path={"/registration"} element={<Registration />} />
-    </Routes>
-  </Container>
-);
+  return (
+    <>
+      <Container>
+        <AppRouter />
+      </Container>
+
+      <Tooltip
+        isOpen={tooltip.isOpen}
+        text={tooltip.message}
+        isError={tooltip.isError}
+        isSuccess={tooltip.isSuccess}
+      />
+    </>
+  );
+};
 
 export default App;

@@ -2,6 +2,14 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+
+  &__password {
+    display: flex;
+
+    div {
+      flex: 0 1 100%;
+    }
+  }
 }
 
 
