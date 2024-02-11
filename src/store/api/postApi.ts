@@ -1,11 +1,7 @@
-import { createApi } from "@reduxjs/toolkit/query/react";
-
 import { Post } from "../../shared/models/post";
-import { baseQuery } from "./baseQuery";
+import { api } from "./api";
 
-export const postApi = createApi({
-  reducerPath: "postApi",
-  baseQuery: baseQuery,
+export const postApi = api.injectEndpoints({
   tagTypes: ["Post"],
   endpoints: (builder) => ({
     getPostById: builder.query<Post, number>({

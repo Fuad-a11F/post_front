@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import moment from "moment";
-
 import { SubmitHandler, useForm } from "react-hook-form";
+
 import { toggleTooltip } from "../../../../store/slice/tooltipSlice";
 import { useCreateCommentMutation } from "../../api/commentApi";
 import { useAppDispatch } from "../../../../shared/hook/redux";
@@ -25,13 +25,13 @@ const CreateComment = () => {
     defaultValues: { comment: "" },
   });
   const { id } = useParams();
-  const { data: username } = useGetUsernameQuery(id);
+  const { data: username } = useGetUsernameQuery();
   const [createTrigger] = useCreateCommentMutation();
   const dispatch = useAppDispatch();
 
   const onSubmit: SubmitHandler<FormValues> = async (data: FormValues) => {
     data.time = moment().format("YYYY-MM-DD HH:mm:ss");
-    data.author = username;
+    data.author = username.username;
 
     await createTrigger({ data, id });
 

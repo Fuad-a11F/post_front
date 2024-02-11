@@ -1,4 +1,5 @@
 import { FC } from "react";
+
 import styles from "./LikeButton.module.scss";
 import Like from "../../ui/icons/like/Like";
 import { useLikeIncrementMutation } from "../../store/api/postApi";

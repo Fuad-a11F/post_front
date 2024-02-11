@@ -21,7 +21,7 @@ const Profile = () => {
 
   return (
     <div className={styles.row}>
-      <div>{data}</div>
+      <div>{data?.username}</div>
 
       <Button text={"Выйти"} onClick={logout} />
     </div>

@@ -5,9 +5,9 @@ const Like = () => {
       version="1.1"
       viewBox="0 0 512 512"
       width="25px"
-      xml:space="preserve"
+      xmlSpace="preserve"
       xmlns="http://www.w3.org/2000/svg"
-      xmlns:xlink="http://www.w3.org/1999/xlink"
+      xmlnsXlink="http://www.w3.org/1999/xlink"
     >
       <g id="_x31_66_x2C__Heart_x2C__Love_x2C__Like_x2C__Twitter">
         <g>

@@ -14,7 +14,7 @@ import ErrorText from "../../../../ui/errorText/ErrorText";
 import Button from "../../../../ui/button/Button";
 
 type FormValues = {
-  comment: any;
+  comment: string;
   postId: number;
   commentId: number;
 };

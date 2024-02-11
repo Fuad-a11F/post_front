@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 import avatar from "./assets/avatar.jpg";
 import styles from "./CommentItem.module.scss";
@@ -28,18 +28,19 @@ const CommentItem: FC<CommentItemProps> = ({ comment }) => {
     formState: { errors },
   } = useForm<FormValues>();
   const { id } = useParams();
-  const { data: username } = useGetUsernameQuery(id);
+  const { data: username } = useGetUsernameQuery();
   const [commentUpdate] = useUpdateCommentMutation();
 
   const [isEditMode, setIsEditMode] = useState(false);
   const ifCouldHaveAdminButton =
-    comment?.author?.toString() === username?.toString() && !isEditMode;
+    comment?.author?.toString() === username?.username.toString() &&
+    !isEditMode;
 
   useEffect(() => {
     setValue("comment", comment.comment);
   }, []);
 
-  const onSubmit = async (data: FormValues) => {
+  const onSubmit: SubmitHandler<FormValues> = async (data: FormValues) => {
     data.postId = id;
     data.commentId = comment.id;
 

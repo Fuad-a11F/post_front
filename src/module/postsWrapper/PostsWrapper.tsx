@@ -5,14 +5,13 @@ import styles from "./PostsWrapper.module.scss";
 import { useAppDispatch, useAppSelector } from "../../shared/hook/redux";
 import { pagination, savePosts } from "../../store/slice/postSlice";
 import Spinner from "../../ui/spinner/Spinner";
-import { getAllPostsSelector, getPostsSelector } from "../../store/selectors";
+import { getPostsSelector } from "../../store/selectors";
 import { useGetPostsQuery } from "../../store/api/postApi";
 import Button from "../../ui/button/Button";
 
 const PostsWrapper = () => {
   const { data, isLoading } = useGetPostsQuery();
   const posts = useAppSelector(getPostsSelector);
-  const allPosts = useAppSelector(getAllPostsSelector);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -35,12 +34,10 @@ const PostsWrapper = () => {
         {posts?.map((item) => <PostItem key={item.time} post={item} />)}
       </div>
 
-      {posts.length !== allPosts.length && (
-        <Button
-          text={" + Загрузить еще "}
-          onClick={() => dispatch(pagination())}
-        />
-      )}
+      <Button
+        text={" + Загрузить еще "}
+        onClick={() => dispatch(pagination())}
+      />
     </>
   );
 };

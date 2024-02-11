@@ -1,10 +1,6 @@
-import { createApi } from "@reduxjs/toolkit/query/react";
+import { api } from "./api";
 
-import { baseQuery } from "./baseQuery";
-
-export const userApi = createApi({
-  reducerPath: "userApi",
-  baseQuery: baseQuery,
+export const userApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getUsername: builder.query<string>({
       query: () => `get-me`,

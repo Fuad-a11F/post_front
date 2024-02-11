@@ -1,9 +1,7 @@
-import { createApi } from "@reduxjs/toolkit/query/react";
-import { baseQuery } from "../../../store/api/baseQuery";
+import { api } from "../../../store/api/api";
+import { Comment } from "../../../shared/models/comment";
 
-export const commentApi = createApi({
-  reducerPath: "comment",
-  baseQuery: baseQuery,
+export const commentApi = api.injectEndpoints({
   tagTypes: ["Comment"],
   endpoints: (builder) => ({
     createComment: builder.mutation({
@@ -32,7 +30,7 @@ export const commentApi = createApi({
       invalidatesTags: ["Comment"],
     }),
 
-    getComments: builder.query({
+    getComments: builder.query<Comment[], string>({
       query: (postId) => `comment/${postId}`,
       providesTags: ["Comment"],
     }),

@@ -13,9 +13,9 @@ const PostDetailInfo = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const { data, isLoading } = useGetPostByIdQuery(id);
-  const { data: username } = useGetUsernameQuery(id);
+  const { data: username } = useGetUsernameQuery();
   const ifCouldHaveAdminButton =
-    data?.author.toString() === username?.toString();
+    data?.author.toString() === username?.username.toString();
 
   const back = () => {
     navigate("/");
