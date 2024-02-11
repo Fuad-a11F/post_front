@@ -10,8 +10,11 @@ export const usernameValidate = {
 
 export const emailValidate = {
   required: "Обязательное поле",
-  pattern:
-    /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/iu,
+  pattern: {
+    value:
+      /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/iu,
+    message: "Введите корректный email",
+  },
 };
 
 export const requiredFieldValidate = {

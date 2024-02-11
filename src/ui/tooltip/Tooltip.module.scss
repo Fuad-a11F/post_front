@@ -1,3 +1,5 @@
+@import "src/assets/style/_variable.scss";
+
 .tooltip {
   display: inline-block;
   position: fixed;
@@ -8,13 +10,18 @@
   opacity: 0;
   transform: translateX(200px);
   border-radius: 10px;
+  z-index: 20;
 
   &__error {
-    background: red;
+    background: map-get($colors, red);
   }
 
   &__success {
-    background: green;
+    background: map-get($colors, green);
+  }
+
+  &__warning {
+    background: map-get($colors, orange);
   }
 
   &__open {

@@ -1,36 +1,40 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import { baseQuery } from "../../../store/api";
+import { baseQuery } from "../../../store/api/baseQuery";
 
 export const commentApi = createApi({
   reducerPath: "comment",
   baseQuery: baseQuery,
+  tagTypes: ["Comment"],
   endpoints: (builder) => ({
     createComment: builder.mutation({
-      query: (body) => ({
-        url: `comment`,
+      query: ({ data, id }) => ({
+        url: `comment/${id}`,
         method: "POST",
-        body: body,
+        body: data,
       }),
+      invalidatesTags: ["Comment"],
     }),
 
     updateComment: builder.mutation({
-      query: (body) => ({
-        url: `comment`,
+      query: ({ data, id }) => ({
+        url: `comment/${id}`,
         method: "PUT",
-        body: body,
+        body: data,
       }),
+      invalidatesTags: ["Comment"],
+    }),
+
+    deleteComment: builder.mutation({
+      query: ({ postId, commentId }) => ({
+        url: `comment/${postId}/${commentId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Comment"],
     }),
 
     getComments: builder.query({
       query: (postId) => `comment/${postId}`,
-    }),
-
-    deleteComment: builder.mutation({
-      query: (body) => ({
-        url: `comment`,
-        method: "DELETE",
-        body: body,
-      }),
+      providesTags: ["Comment"],
     }),
   }),
 });
@@ -38,6 +42,6 @@ export const commentApi = createApi({
 export const {
   useCreateCommentMutation,
   useUpdateCommentMutation,
-  useDeleteCommentMutation,
   useGetCommentsQuery,
+  useDeleteCommentMutation,
 } = commentApi;

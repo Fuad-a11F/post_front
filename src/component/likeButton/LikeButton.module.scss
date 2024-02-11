@@ -1,0 +1,23 @@
+@import "src/assets/style/_variable.scss";
+
+.like {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  path {
+    fill: map-get($colors, pink);
+  }
+}
+
+.no_like {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: .3s;
+
+  &:hover {
+    fill: map-get($colors, darkPink);
+    cursor: pointer;
+  }
+}

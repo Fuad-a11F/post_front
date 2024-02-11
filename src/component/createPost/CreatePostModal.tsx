@@ -9,16 +9,15 @@ import Textarea from "../../ui/textarea/Textarea";
 import Button from "../../ui/button/Button";
 import Dropzone from "../../ui/dropzone/Dropzone";
 import useClearForm from "./shared/hook/useClearForm";
-import { useCreatePostMutation } from "./api/createPostApi";
-import { addNewPost } from "../../store/slice/postSlice";
 import { useAppDispatch } from "../../shared/hook/redux";
 import { toggleTooltip } from "../../store/slice/tooltipSlice";
 import ErrorText from "../../ui/errorText/ErrorText";
 import { requiredFieldValidate } from "../../shared/validate/validate";
+import { useCreatePostMutation } from "../../store/api/postApi";
 
 type FormValues = {
   title: string;
-  description: string;
+  text: string;
   picture: string;
   time: string;
 };
@@ -40,10 +39,10 @@ const CreatePostModal: FC<CreatePostProps> = ({ isModalOpened, hideModal }) => {
     reset,
     formState: { errors },
   } = useForm<FormValues>({
-    defaultValues: { title: "", description: "" },
+    defaultValues: { title: "", text: "" },
   });
 
-  useClearForm(isModalOpened, reset);
+  useClearForm(isModalOpened, reset, setPreview);
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     const reader = new FileReader();
@@ -56,21 +55,33 @@ const CreatePostModal: FC<CreatePostProps> = ({ isModalOpened, hideModal }) => {
 
   const onSubmit: SubmitHandler<FormValues> = async (data: FormValues) => {
     data.time = moment().format("YYYY-MM-DD HH:mm:ss");
-    const result = await createPost(data);
 
-    dispatch(addNewPost(result.data));
+    const res = await createPost(data);
 
-    reset();
-    hideModal();
+    if (res.hasOwnProperty("data")) {
+      reset();
+      hideModal();
 
-    dispatch(
-      toggleTooltip({
-        isOpen: true,
-        message: "Вы успешно создали статью",
-        isSuccess: true,
-        isError: false,
-      }),
-    );
+      dispatch(
+        toggleTooltip({
+          isOpen: true,
+          message: "Вы успешно создали статью",
+          isSuccess: true,
+          isError: false,
+          isWarning: false,
+        }),
+      );
+    } else if (res.hasOwnProperty("error")) {
+      dispatch(
+        toggleTooltip({
+          isOpen: true,
+          message: "Вы превысили допустимый размер картинки",
+          isSuccess: false,
+          isError: true,
+          isWarning: false,
+        }),
+      );
+    }
   };
 
   return (
@@ -107,7 +118,7 @@ const CreatePostModal: FC<CreatePostProps> = ({ isModalOpened, hideModal }) => {
 
         <Controller
           control={control}
-          name="description"
+          name="text"
           rules={requiredFieldValidate}
           render={({ field: { onChange, value } }) => (
             <div>
@@ -117,7 +128,7 @@ const CreatePostModal: FC<CreatePostProps> = ({ isModalOpened, hideModal }) => {
                 placeholder={"Введите описание статьи"}
               />
 
-              <ErrorText text={errors?.description?.message} />
+              <ErrorText text={errors?.text?.message} />
             </div>
           )}
         />

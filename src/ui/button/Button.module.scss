@@ -1,14 +1,16 @@
+@import "src/assets/style/_variable.scss";
+
 .button {
   height: 30px;
   min-width: 80px;
   cursor: pointer;
-  background: blue;
+  background: map-get($colors, blue);
   border-radius: 4px;
   outline: none;
   border: none;
   transition: .2s;
 
   &:hover {
-    background: #2020a2;
+    background: map-get($colors, darkBlue);
   }
 }

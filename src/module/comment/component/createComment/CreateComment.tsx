@@ -1,20 +1,18 @@
 import { useParams } from "react-router-dom";
 import moment from "moment";
 
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { toggleTooltip } from "../../../../store/slice/tooltipSlice";
 import { useCreateCommentMutation } from "../../api/commentApi";
 import { useAppDispatch } from "../../../../shared/hook/redux";
-import Textarea from "../../../../ui/textarea/Textarea";
-import Button from "../../../../ui/button/Button";
-import styles from "./CreateComment.module.scss";
-import ErrorText from "../../../../ui/errorText/ErrorText";
-import { requiredFieldValidate } from "../../../../shared/validate/validate";
+import { useGetUsernameQuery } from "../../../../store/api/userApi";
+import CommentForm from "../commentForm/CommentForm";
 
 type FormValues = {
   comment: string;
   time: string;
   postId: string;
+  author: string;
 };
 
 const CreateComment = () => {
@@ -27,14 +25,15 @@ const CreateComment = () => {
     defaultValues: { comment: "" },
   });
   const { id } = useParams();
+  const { data: username } = useGetUsernameQuery(id);
   const [createTrigger] = useCreateCommentMutation();
   const dispatch = useAppDispatch();
 
   const onSubmit: SubmitHandler<FormValues> = async (data: FormValues) => {
-    data.postId = id;
     data.time = moment().format("YYYY-MM-DD HH:mm:ss");
+    data.author = username;
 
-    await createTrigger(data);
+    await createTrigger({ data, id });
 
     reset();
 
@@ -44,6 +43,7 @@ const CreateComment = () => {
         message: "Комментарий добавлен",
         isSuccess: true,
         isError: false,
+        isWarning: false,
       }),
     );
   };
@@ -52,26 +52,12 @@ const CreateComment = () => {
     <div>
       <h3>Оставить комментарий</h3>
 
-      <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-        <Controller
-          control={control}
-          name="comment"
-          rules={requiredFieldValidate}
-          render={({ field: { value, onChange } }) => (
-            <div>
-              <Textarea
-                value={value}
-                setValue={onChange}
-                placeholder={"Комментарий"}
-              />
-
-              <ErrorText text={errors?.comment?.message} />
-            </div>
-          )}
-        />
-
-        <Button text={"Отправить"} />
-      </form>
+      <CommentForm
+        onSubmit={onSubmit}
+        handleSubmit={handleSubmit}
+        control={control}
+        errors={errors}
+      />
     </div>
   );
 };

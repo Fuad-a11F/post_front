@@ -1,48 +1,39 @@
 import { FC } from "react";
 
 import styles from "./PostItem.module.scss";
-import img from "./assets/Screenshot_8.png";
 import CustomLink from "../../ui/customLink/CustomLink";
+import { Post } from "../../shared/models/post";
+import noImage from "./assets/noImage.jpg";
+import LikeButton from "../likeButton/LikeButton";
 
 type PostItemProps = {
-  id: string;
-  text: string;
-  time: any;
-  title: string;
-  image: string;
-  author: string;
+  post: Post;
 };
 
-const PostItem: FC<PostItemProps> = ({
-  id,
-  text,
-  title,
-  time,
-  image,
-  author,
-}) => {
+const PostItem: FC<PostItemProps> = ({ post }) => {
   return (
     <div className={styles.item}>
       <div>
         <div className={styles.item__img}>
-          <img src={image} alt="post_image" />
+          <img src={post.picture || noImage} alt="post_image" />
         </div>
 
-        <p className={styles.item__title}>{title}</p>
+        <p className={styles.item__title}>{post.title}</p>
 
-        <p className={styles.item__text}>{text}</p>
+        <p className={styles.item__text}>{post.text}</p>
       </div>
 
       <div>
         <div>
-          <p className={styles.item__time}>Автор: {author}</p>
-          <p className={styles.item__time}>{time}</p>
+          <p className={styles.item__time}>Автор: {post.author}</p>
+
+          <p className={styles.item__time}>{post.time}</p>
         </div>
 
         <div className={styles.item__row}>
-          <CustomLink text={"Читать всю"} link={`/post/${id}`} />
+          <CustomLink text={"Читать всю"} link={`/post/${post.id}`} />
 
-          <button>Лайк</button>
+          <LikeButton post={post} />
         </div>
       </div>
     </div>

@@ -1,5 +1,6 @@
 import { FC } from "react";
 import classNames from "classnames";
+
 import styles from "./Select.module.scss";
 
 type Options = {

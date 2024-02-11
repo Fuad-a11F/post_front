@@ -1,5 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import { baseQuery } from "../../../store/api";
+import { baseQuery } from "../../../store/api/baseQuery";
 
 type Login = {
   login: string;

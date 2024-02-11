@@ -14,6 +14,7 @@ import {
   passwordValidate,
   usernameValidate,
 } from "../../../shared/validate/validate";
+import InputPassword from "../component/inputPassword/InputPassword";
 
 type FormValues = {
   username: string;
@@ -40,6 +41,7 @@ const LoginForm = () => {
           message: response.data.message,
           isSuccess: false,
           isError: true,
+          isWarning: false,
         }),
       );
     } else {
@@ -54,6 +56,7 @@ const LoginForm = () => {
           message: "Вы успешно вошли в систему",
           isSuccess: true,
           isError: false,
+          isWarning: false,
         }),
       );
     }
@@ -88,11 +91,10 @@ const LoginForm = () => {
           rules={passwordValidate}
           render={({ field: { onChange, value } }) => (
             <div>
-              <Input
+              <InputPassword
                 value={value}
                 setValue={onChange}
                 isLoading={isLoading}
-                type={"password"}
                 placeholder={"Пароль"}
               />
 

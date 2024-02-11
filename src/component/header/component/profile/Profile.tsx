@@ -16,7 +16,6 @@ const Profile = () => {
     navigate("/login");
     localStorage.removeItem("idAuthUser");
     dispatch(isNotAuth());
-
     window.location.reload();
   };
 

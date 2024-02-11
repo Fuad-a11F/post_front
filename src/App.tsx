@@ -18,6 +18,7 @@ const App = () => {
         text={tooltip.message}
         isError={tooltip.isError}
         isSuccess={tooltip.isSuccess}
+        isWarning={tooltip.isWarning}
       />
     </>
   );

@@ -16,6 +16,7 @@ import {
   usernameValidate,
 } from "../../../shared/validate/validate";
 import { generatePassword } from "./helper/generatePassword";
+import InputPassword from "../component/inputPassword/InputPassword";
 
 type FormValues = {
   username: string;
@@ -44,6 +45,7 @@ const RegisterForm = () => {
           message: response.data.message,
           isSuccess: false,
           isError: true,
+          isWarning: false,
         }),
       );
     } else {
@@ -56,6 +58,7 @@ const RegisterForm = () => {
           message: "Вы успешно зарегистрировались и вошли в систему",
           isSuccess: true,
           isError: false,
+          isWarning: false,
         }),
       );
     }
@@ -115,11 +118,10 @@ const RegisterForm = () => {
           render={({ field: { onChange, value } }) => (
             <div>
               <div className={styles.form__password}>
-                <Input
+                <InputPassword
                   value={value}
                   setValue={onChange}
                   isLoading={isLoading}
-                  type={"password"}
                   placeholder={"Пароль"}
                 />
 

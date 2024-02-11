@@ -1,7 +1,8 @@
+import { useEffect } from "react";
+
 import styles from "./Filter.module.scss";
 import Input from "../../ui/input/Input";
 import Select from "../../ui/select/Select";
-import { useEffect, useState } from "react";
 import {
   filterUpdate,
   searchPost,

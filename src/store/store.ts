@@ -1,37 +1,36 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { createPostApi } from "../module/createPost/api/createPostApi";
-import { postApi } from "../module/postsWrapper/api/postApi";
-import { postDetailApi } from "../module/postDetailInfo/api/postDetailApi";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+
 import { authApi } from "../module/auth/api/authApi";
 import auth from "./slice/authSlice";
 import post from "./slice/postSlice";
 import tooltip from "./slice/tooltipSlice";
 import { userApi } from "./api/userApi";
 import { commentApi } from "../module/comment/api/commentApi";
+import { postApi } from "./api/postApi";
 
-export const store = configureStore({
-  reducer: {
-    [createPostApi.reducerPath]: createPostApi.reducer,
-    [postApi.reducerPath]: postApi.reducer,
-    [postDetailApi.reducerPath]: postDetailApi.reducer,
-    [authApi.reducerPath]: authApi.reducer,
-    [userApi.reducerPath]: userApi.reducer,
-    [commentApi.reducerPath]: commentApi.reducer,
-    post,
-    auth,
-    tooltip,
-  },
-
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(
-      createPostApi.middleware,
-      postApi.middleware,
-      postDetailApi.middleware,
-      authApi.middleware,
-      commentApi.middleware,
-      userApi.middleware,
-    ),
+const rootReducer = combineReducers({
+  [authApi.reducerPath]: authApi.reducer,
+  [userApi.reducerPath]: userApi.reducer,
+  [postApi.reducerPath]: postApi.reducer,
+  [commentApi.reducerPath]: commentApi.reducer,
+  post,
+  auth,
+  tooltip,
 });
 
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
+export const setupStore = () =>
+  configureStore({
+    reducer: rootReducer,
+
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware().concat(
+        postApi.middleware,
+        authApi.middleware,
+        commentApi.middleware,
+        userApi.middleware,
+      ),
+  });
+
+export type RootState = ReturnType<typeof rootReducer>;
+export type AppStore = ReturnType<typeof setupStore>;
+export type AppDispatch = AppStore["dispatch"];

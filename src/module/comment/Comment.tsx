@@ -1,29 +1,36 @@
+import { useParams } from "react-router-dom";
+
 import CreateComment from "./component/createComment/CreateComment";
 import CommentItem from "./component/commentItem/CommentItem";
 import styles from "./Comment.module.scss";
 import { useGetCommentsQuery } from "./api/commentApi";
+import Spinner from "../../ui/spinner/Spinner";
+import Divider from "../../ui/divider/Divider";
 
 const Comment = () => {
-  const { data } = useGetCommentsQuery();
+  const { id } = useParams();
+  const { data, isLoading } = useGetCommentsQuery(id);
+
+  if (isLoading) {
+    return (
+      <div className={styles.spinner}>
+        <Spinner />
+      </div>
+    );
+  }
 
   return (
     <div>
       <CreateComment />
 
-      <div className={styles.hr}>
-        <hr />
-      </div>
+      <Divider />
 
-      {/*<div>{data?.map((item) => <CommentItem comment={item} />)}</div>*/}
+      {data.length === 0 && <div>Комментариев нет</div>}
 
       <div>
-        <CommentItem
-          comment={{
-            author: "123",
-            comment: "324234234 dfs as",
-            time: "324234234",
-          }}
-        />
+        {[...data].reverse().map((item) => (
+          <CommentItem key={item.id} comment={item} />
+        ))}
       </div>
     </div>
   );

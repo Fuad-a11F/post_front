@@ -1,6 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+type AuthState = {
+  isAuth: boolean;
+};
+
+const initialState: AuthState = {
   isAuth: !!localStorage.getItem("idAuthUser"),
 };
 

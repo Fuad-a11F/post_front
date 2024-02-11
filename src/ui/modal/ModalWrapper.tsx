@@ -1,5 +1,6 @@
 import { FC, ReactNode } from "react";
 import classNames from "classnames";
+
 import styles from "./ModalWrapper.module.scss";
 import Button from "../button/Button";
 

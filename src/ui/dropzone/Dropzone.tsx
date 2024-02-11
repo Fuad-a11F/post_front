@@ -1,5 +1,6 @@
 import { useDropzone } from "react-dropzone";
 import { FC } from "react";
+
 import styles from "./Dropzone.module.scss";
 
 type DropzoneProps = {

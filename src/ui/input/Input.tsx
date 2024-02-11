@@ -1,6 +1,7 @@
-import styles from "./Input.module.scss";
 import { FC } from "react";
 import classNames from "classnames";
+
+import styles from "./Input.module.scss";
 
 type InputProps = {
   value: string;

@@ -1,17 +1,27 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const initialState = {
+type TooltipState = {
+  message: string;
+  isOpen: boolean;
+  isSuccess: boolean;
+  isError: boolean;
+  isWarning: boolean;
+};
+
+const initialState: TooltipState = {
   message: "",
   isOpen: false,
   isSuccess: false,
   isError: false,
+  isWarning: false,
 };
 
 const tooltipSlice = createSlice({
   name: "tooltip",
   initialState,
   reducers: {
-    toggleTooltip(state, action) {
+    toggleTooltip(state, action: PayloadAction<TooltipState>) {
+      state.isWarning = action.payload.isWarning;
       state.isError = action.payload.isError;
       state.isSuccess = action.payload.isSuccess;
       state.isOpen = action.payload.isOpen;

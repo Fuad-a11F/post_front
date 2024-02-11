@@ -2,15 +2,17 @@ import { useEffect } from "react";
 
 import PostItem from "../../component/postItem/PostItem";
 import styles from "./PostsWrapper.module.scss";
-import { useGetPostsQuery } from "./api/postApi";
 import { useAppDispatch, useAppSelector } from "../../shared/hook/redux";
 import { pagination, savePosts } from "../../store/slice/postSlice";
 import Spinner from "../../ui/spinner/Spinner";
-import { getPostsSelector } from "../../store/selectors";
+import { getAllPostsSelector, getPostsSelector } from "../../store/selectors";
+import { useGetPostsQuery } from "../../store/api/postApi";
+import Button from "../../ui/button/Button";
 
 const PostsWrapper = () => {
   const { data, isLoading } = useGetPostsQuery();
   const posts = useAppSelector(getPostsSelector);
+  const allPosts = useAppSelector(getAllPostsSelector);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -30,20 +32,15 @@ const PostsWrapper = () => {
   return (
     <>
       <div className={styles.grid}>
-        {posts?.post.map((item) => (
-          <PostItem
-            key={item.time}
-            id={item.id}
-            text={item.description}
-            title={item.title}
-            image={item.picture}
-            time={item.time}
-            author={item.author}
-          />
-        ))}
+        {posts?.map((item) => <PostItem key={item.time} post={item} />)}
       </div>
 
-      <button onClick={() => dispatch(pagination())}>87</button>
+      {posts.length !== allPosts.length && (
+        <Button
+          text={" + Загрузить еще "}
+          onClick={() => dispatch(pagination())}
+        />
+      )}
     </>
   );
 };

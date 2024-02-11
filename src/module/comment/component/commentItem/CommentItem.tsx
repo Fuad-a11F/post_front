@@ -1,25 +1,21 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useForm } from "react-hook-form";
 
-import avatar from "./avatar.jpg";
+import avatar from "./assets/avatar.jpg";
 import styles from "./CommentItem.module.scss";
 import { useGetUsernameQuery } from "../../../../store/api/userApi";
-import Button from "../../../../ui/button/Button";
-import { Controller, useForm } from "react-hook-form";
-import Textarea from "../../../../ui/textarea/Textarea";
-import {
-  useDeleteCommentMutation,
-  useUpdateCommentMutation,
-} from "../../api/commentApi";
-import { requiredFieldValidate } from "../../../../shared/validate/validate";
-import ErrorText from "../../../../ui/errorText/ErrorText";
+import { useUpdateCommentMutation } from "../../api/commentApi";
+import CommentForm from "../commentForm/CommentForm";
+import AdditionButton from "./component/additionButton/AdditionButton";
+import { Comment } from "../../../../shared/models/comment";
 
 type CommentItemProps = {
-  comment: any;
+  comment: Comment;
 };
 
 type FormValues = {
-  comment: any;
+  comment: string;
   postId: number;
   commentId: number;
 };
@@ -28,28 +24,28 @@ const CommentItem: FC<CommentItemProps> = ({ comment }) => {
   const {
     control,
     handleSubmit,
+    setValue,
     formState: { errors },
-  } = useForm<FormValues>({
-    defaultValues: { comment: comment.comment },
-  });
+  } = useForm<FormValues>();
   const { id } = useParams();
   const { data: username } = useGetUsernameQuery(id);
   const [commentUpdate] = useUpdateCommentMutation();
-  const [commentDelete] = useDeleteCommentMutation();
 
   const [isEditMode, setIsEditMode] = useState(false);
+  const ifCouldHaveAdminButton =
+    comment?.author?.toString() === username?.toString() && !isEditMode;
+
+  useEffect(() => {
+    setValue("comment", comment.comment);
+  }, []);
 
   const onSubmit = async (data: FormValues) => {
     data.postId = id;
     data.commentId = comment.id;
 
-    await commentUpdate(data);
+    await commentUpdate({ data, id: comment.id });
 
     setIsEditMode(false);
-  };
-
-  const handleDelete = () => {
-    commentDelete({ postId: id, commentId: comment.id });
   };
 
   return (
@@ -64,41 +60,24 @@ const CommentItem: FC<CommentItemProps> = ({ comment }) => {
             {comment.author} ({comment.time})
           </p>
 
-          {comment.author.toString() === username?.toString() &&
-            !isEditMode && (
-              <div>
-                <Button
-                  text={"Отредактировать"}
-                  onClick={() => setIsEditMode(true)}
-                />
-                <Button text={"Удалить"} onClick={handleDelete} />
-              </div>
-            )}
+          {ifCouldHaveAdminButton && (
+            <AdditionButton
+              id={id}
+              setIsEditMode={setIsEditMode}
+              commentId={comment.id}
+            />
+          )}
         </div>
 
         {!isEditMode && <p>{comment.comment}</p>}
 
         {isEditMode && (
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <Controller
-              control={control}
-              name="comment"
-              rules={requiredFieldValidate}
-              render={({ field: { value, onChange } }) => (
-                <div>
-                  <Textarea
-                    value={value}
-                    setValue={onChange}
-                    placeholder={"Комментарий"}
-                  />
-
-                  <ErrorText text={errors?.comment?.message} />
-                </div>
-              )}
-            />
-
-            <Button text={"Сохранить"} />
-          </form>
+          <CommentForm
+            onSubmit={onSubmit}
+            handleSubmit={handleSubmit}
+            control={control}
+            errors={errors}
+          />
         )}
       </div>
     </div>

@@ -1,50 +1,80 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const initialState = {
-  post: [],
-  copy_post: [],
+import { Post } from "../../shared/models/post";
+
+type Filter = {
+  search: string;
+  sort: "old" | "new";
+};
+
+type FilterUpdate = {
+  field: string;
+  value: number;
+};
+
+type Pagination = {
+  limit: number;
+};
+
+type PostSlice = {
+  partOfPosts: Post;
+  allPosts: Post;
+  filter: Filter;
+  pagination: Pagination;
+};
+
+const initialState: PostSlice = {
+  partOfPosts: [],
+  allPosts: [],
   filter: { search: "", sort: "old" },
-
-  offset: 0,
-  limit: 6,
+  pagination: { limit: 6 },
 };
 
 const postSlice = createSlice({
   name: "post",
   initialState,
   reducers: {
-    savePosts(state, action) {
-      state.post = action.payload.slice(state.offset, state.limit);
+    savePosts(state, action: PayloadAction<Post[]>) {
+      const data = [...action.payload];
 
-      state.copy_post = action.payload;
+      if (state.filter.sort === "old") {
+        state.partOfPosts = data.slice(0, state.pagination.limit);
+        state.allPosts = data;
+      } else if (state.filter.sort === "new") {
+        state.partOfPosts = data.reverse().slice(0, state.pagination.limit);
+        state.allPosts = data;
+      }
     },
 
     pagination(state) {
-      state.offset += 6;
-      state.limit += 6;
+      state.pagination.limit += 6;
 
-      state.post.push(...state.copy_post.slice(state.offset, state.limit));
+      state.partOfPosts = [...state.allPosts.slice(0, state.pagination.limit)];
     },
 
     searchPost(state) {
-      if (state.filter.search === "") state.post = state.copy_post;
+      if (state.filter.search === "") {
+        state.partOfPosts = state.allPosts.slice(0, state.pagination.limit);
+        return;
+      }
 
-      state.post = state.copy_post.filter((item) =>
+      state.partOfPosts = state.allPosts.filter((item) =>
         item.title.includes(state.filter.search),
       );
     },
 
     sortPost(state) {
-      state.post.reverse();
+      state.allPosts.reverse();
+      state.partOfPosts = [...state.allPosts.slice(0, state.pagination.limit)];
     },
 
-    addNewPost(state, action) {
-      if (state.filter.sort === "old") state.post.push(action.payload);
-      if (state.filter.sort === "new") state.post.unshift(action.payload);
-    },
-
-    filterUpdate(state, action) {
+    filterUpdate(state, action: PayloadAction<FilterUpdate>) {
       state.filter[action.payload.field] = action.payload.value;
+    },
+
+    resetFilter(state) {
+      state.filter.search = "";
+      state.filter.sort = "old";
     },
   },
 });
@@ -54,7 +84,7 @@ export const {
   searchPost,
   sortPost,
   filterUpdate,
-  addNewPost,
   pagination,
+  resetFilter,
 } = postSlice.actions;
 export default postSlice.reducer;
